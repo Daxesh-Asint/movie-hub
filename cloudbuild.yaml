@@ -1,0 +1,34 @@
+steps:
+  # Build the Docker image
+  - name: 'gcr.io/cloud-builders/docker'
+    args:
+      [
+        'build',
+        '-t',
+        'us-central1-docker.pkg.dev/integral-iris-449816-g3/moviehub-repo/moviehub-app:latest',
+        '-t',
+        'us-central1-docker.pkg.dev/integral-iris-449816-g3/moviehub-repo/moviehub-app:$BUILD_ID',
+        '.',
+      ]
+
+  # Push the image to Artifact Registry
+  - name: 'gcr.io/cloud-builders/docker'
+    args:
+      [
+        'push',
+        'us-central1-docker.pkg.dev/integral-iris-449816-g3/moviehub-repo/moviehub-app:latest',
+      ]
+
+  - name: 'gcr.io/cloud-builders/docker'
+    args:
+      [
+        'push',
+        'us-central1-docker.pkg.dev/integral-iris-449816-g3/moviehub-repo/moviehub-app:$BUILD_ID',
+      ]
+
+images:
+  - 'us-central1-docker.pkg.dev/integral-iris-449816-g3/moviehub-repo/moviehub-app:latest'
+  - 'us-central1-docker.pkg.dev/integral-iris-449816-g3/moviehub-repo/moviehub-app:$BUILD_ID'
+
+options:
+  logging: CLOUD_LOGGING_ONLY
